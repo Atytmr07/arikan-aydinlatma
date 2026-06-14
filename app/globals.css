@@ -1,0 +1,123 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,400;0,500;0,600;1,400;1,600&family=Jost:wght@300;400;500;600&family=Marcellus&family=Montserrat:wght@300;400;500;600&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: #ffffff;
+  color: #16130f;
+  overflow-x: hidden;
+}
+
+/* Prevent any horizontal scroll across all breakpoints */
+html,
+body {
+  max-width: 100vw;
+}
+
+/* Glassmorphism surfaces */
+.glass-dark {
+  background: rgba(20, 18, 16, 0.38);
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+  border: 1px solid rgba(212, 175, 110, 0.18);
+}
+.glass-light {
+  background: rgba(255, 255, 255, 0.55);
+  -webkit-backdrop-filter: blur(12px) saturate(140%);
+  backdrop-filter: blur(12px) saturate(140%);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06);
+}
+
+/* Ghost / outlined display type helpers */
+.text-stroke-magaza {
+  -webkit-text-stroke: 1px rgba(225, 27, 34, 0.16);
+  color: transparent;
+}
+.text-stroke-exclusive {
+  -webkit-text-stroke: 1px rgba(212, 175, 110, 0.14);
+  color: transparent;
+}
+.text-stroke-gold-portal {
+  -webkit-text-stroke: 1px rgba(212, 175, 110, 0.18);
+  color: transparent;
+}
+
+/* Horizontal snap scroll (mobile review carousel) */
+.snap-x-mandatory {
+  scroll-snap-type: x mandatory;
+}
+.snap-start {
+  scroll-snap-align: start;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Asymmetric category grid (Brand A) — named areas on desktop only */
+.kategori-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.75rem;
+}
+.kategori-grid > * {
+  min-height: 230px;
+}
+@media (min-width: 768px) {
+  .kategori-grid {
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: 260px 260px 220px;
+    grid-template-areas:
+      "avize avize lambader"
+      "aplik abajur lambader"
+      "ampul ampul proje";
+  }
+  .kategori-grid > * {
+    min-height: 0;
+  }
+  .area-avize {
+    grid-area: avize;
+  }
+  .area-lambader {
+    grid-area: lambader;
+  }
+  .area-aplik {
+    grid-area: aplik;
+  }
+  .area-abajur {
+    grid-area: abajur;
+  }
+  .area-ampul {
+    grid-area: ampul;
+  }
+  .area-proje {
+    grid-area: proje;
+  }
+}
+
+/* Reduced motion: kill transforms/animations, keep opacity fades */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
