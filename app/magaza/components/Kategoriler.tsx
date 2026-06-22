@@ -2,40 +2,39 @@
 
 import Link from "next/link";
 import { motion, type Variants } from "framer-motion";
-import { ArrowUpRight } from "lucide-react";
-import SmartImage from "../../components/SmartImage";
+import {
+  ArrowUpRight,
+  LampCeiling,
+  LampFloor,
+  LampWallUp,
+  LampDesk,
+  Lightbulb,
+  type LucideIcon,
+} from "lucide-react";
 import { useCountUp } from "../../../hooks/useCountUp";
 
 interface Tile {
   name: string;
-  area: string;
+  desc: string;
+  icon: LucideIcon;
   href: string;
-  external?: boolean;
-  dark?: boolean;
 }
 
 const TILES: Tile[] = [
-  { name: "Avize", area: "area-avize", href: "#katalog" },
-  { name: "Lambader", area: "area-lambader", href: "#katalog" },
-  { name: "Aplik", area: "area-aplik", href: "#katalog" },
-  { name: "Abajur", area: "area-abajur", href: "#katalog" },
-  { name: "Ampul", area: "area-ampul", href: "#katalog" },
-  {
-    name: "Tasarım & Proje",
-    area: "area-proje",
-    href: "/exclusive",
-    external: true,
-    dark: true,
-  },
+  { name: "Avize", desc: "Salon & antre", icon: LampCeiling, href: "#katalog" },
+  { name: "Lambader", desc: "Ayaklı aydınlatma", icon: LampFloor, href: "#katalog" },
+  { name: "Aplik", desc: "Duvar armatürleri", icon: LampWallUp, href: "#katalog" },
+  { name: "Abajur", desc: "Masa & komodin", icon: LampDesk, href: "#katalog" },
+  { name: "Ampul & LED", desc: "Spot ve kaynaklar", icon: Lightbulb, href: "#katalog" },
 ];
 
 const grid: Variants = {
   hidden: {},
-  show: { transition: { staggerChildren: 0.08 } },
+  show: { transition: { staggerChildren: 0.07 } },
 };
 
 const card: Variants = {
-  hidden: { opacity: 0, y: 40 },
+  hidden: { opacity: 0, y: 32 },
   show: {
     opacity: 1,
     y: 0,
@@ -44,69 +43,73 @@ const card: Variants = {
 };
 
 function CategoryTile({ tile }: { tile: Tile }) {
-  // The "Tasarım & Proje" tile previews the dark/gold Exclusive brand.
-  if (tile.dark) {
-    return (
-      <motion.div
-        variants={card}
-        className={`group relative block overflow-hidden bg-[#0A0908] ${tile.area}`}
-      >
-        <Link href={tile.href} className="absolute inset-0 z-10" aria-label={tile.name}>
-          <span className="sr-only">{tile.name}</span>
-        </Link>
-        <div className="absolute inset-0 opacity-60">
-          <SmartImage alt="" brand="exclusive" sizes="(max-width: 768px) 100vw, 33vw" />
-        </div>
-        <div className="absolute bottom-0 left-0 flex w-full items-end justify-between p-5">
-          <div>
-            <p className="font-montserrat text-[10px] uppercase tracking-[0.25em] text-[#D4AF6E]">
-              Arıkan Exclusive
-            </p>
-            <h3 className="mt-1 font-cormorant text-2xl italic text-[#F0EADF] md:text-3xl">
-              {tile.name}
-            </h3>
-          </div>
-          <ArrowUpRight
-            size={20}
-            className="text-[#D4AF6E] transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-          />
-        </div>
-        <span
-          aria-hidden
-          className="absolute bottom-0 left-0 h-[2px] w-0 bg-[#D4AF6E] transition-all duration-500 group-hover:w-full"
-        />
-      </motion.div>
-    );
-  }
-
+  const Icon = tile.icon;
   return (
-    <motion.div
+    <motion.a
       variants={card}
-      className={`group relative block overflow-hidden border border-black/[0.08] bg-[#F1ECE4] ${tile.area}`}
+      href={tile.href}
+      className="group relative flex min-h-[210px] flex-col justify-between overflow-hidden border border-black/[0.08] bg-[#FBF9F6] p-7 transition-colors duration-300 hover:border-[#E11B22]/40"
     >
-      <a href={tile.href} className="absolute inset-0 z-10" aria-label={tile.name}>
-        <span className="sr-only">{tile.name}</span>
-      </a>
-      <div className="absolute inset-0 transition-transform duration-700 ease-out group-hover:scale-[1.08]">
-        <SmartImage
-          alt={`${tile.name} kategorisi`}
-          brand="magaza"
-          sizes="(max-width: 768px) 100vw, 33vw"
-        />
-      </div>
-      {/* light bottom gradient for legibility */}
-      <div
-        aria-hidden
-        className="absolute inset-0 bg-gradient-to-t from-white via-white/40 to-transparent"
+      <Icon
+        size={34}
+        strokeWidth={1.1}
+        className="text-[#E11B22] transition-transform duration-500 group-hover:-translate-y-0.5"
       />
-      <div className="absolute bottom-0 left-0 w-full p-5">
-        <h3 className="font-marcellus text-2xl text-[#16130F] md:text-3xl">
+      <div>
+        <h3 className="font-marcellus text-2xl text-[#16130F] md:text-[26px]">
           {tile.name}
         </h3>
+        <span className="mt-3 inline-flex items-center gap-1.5 font-jost text-[11px] uppercase tracking-[0.18em] text-[#8A8178] transition-colors duration-300 group-hover:text-[#E11B22]">
+          {tile.desc}
+          <ArrowUpRight
+            size={13}
+            className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+          />
+        </span>
       </div>
       <span
         aria-hidden
         className="absolute bottom-0 left-0 h-[2px] w-0 bg-[#E11B22] transition-all duration-500 group-hover:w-full"
+      />
+    </motion.a>
+  );
+}
+
+function ExclusiveTile() {
+  return (
+    <motion.div
+      variants={card}
+      className="group relative flex min-h-[210px] flex-col justify-between overflow-hidden bg-[#0A0908] p-7"
+    >
+      <Link href="/exclusive" className="absolute inset-0 z-10" aria-label="Arıkan Exclusive">
+        <span className="sr-only">Arıkan Exclusive</span>
+      </Link>
+      <div
+        aria-hidden
+        className="absolute inset-0 opacity-70"
+        style={{
+          background:
+            "radial-gradient(ellipse 70% 60% at 75% 20%, rgba(212,175,110,0.22), transparent 65%)",
+        }}
+      />
+      <p className="relative font-montserrat text-[10px] uppercase tracking-[0.28em] text-[#D4AF6E]">
+        Arıkan Exclusive
+      </p>
+      <div className="relative">
+        <h3 className="font-cormorant text-3xl italic text-[#F0EADF] md:text-4xl">
+          Tasarım &amp; Proje
+        </h3>
+        <span className="mt-3 inline-flex items-center gap-1.5 font-montserrat text-[10px] uppercase tracking-[0.2em] text-[#D4AF6E]">
+          Mimari aydınlatma stüdyosu
+          <ArrowUpRight
+            size={13}
+            className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+          />
+        </span>
+      </div>
+      <span
+        aria-hidden
+        className="absolute bottom-0 left-0 h-[2px] w-0 bg-[#D4AF6E] transition-all duration-500 group-hover:w-full"
       />
     </motion.div>
   );
@@ -174,11 +177,12 @@ export default function Kategoriler() {
           initial="hidden"
           whileInView="show"
           viewport={{ once: true, margin: "-60px" }}
-          className="kategori-grid"
+          className="grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-4"
         >
           {TILES.map((tile) => (
             <CategoryTile key={tile.name} tile={tile} />
           ))}
+          <ExclusiveTile />
         </motion.div>
       </div>
     </section>
