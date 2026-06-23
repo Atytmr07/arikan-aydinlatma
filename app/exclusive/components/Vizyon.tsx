@@ -61,7 +61,7 @@ export default function Vizyon() {
           <motion.svg
             aria-hidden
             viewBox="0 0 320 180"
-            className="pointer-events-none absolute -bottom-20 right-0 h-48 w-80 md:-right-4"
+            className="pointer-events-none absolute -bottom-20 right-0 hidden h-48 w-80 md:block md:-right-4"
             fill="none"
             initial="hidden"
             whileInView="visible"

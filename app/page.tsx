@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion, type Variants } from "framer-motion";
-import { ArrowRight, MoveVertical } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { MagazaMark } from "./components/BrandMarks";
 
 type Side = "magaza" | "exclusive";
@@ -129,13 +129,6 @@ export default function PortalPage() {
             </motion.button>
           </motion.div>
 
-          <button
-            onClick={() => handleEnter("exclusive")}
-            className="absolute bottom-8 left-1/2 z-10 flex -translate-x-1/2 items-center gap-2 font-jost text-[10px] uppercase tracking-[0.18em] text-[#8A8178] opacity-40 transition-opacity duration-300 hover:opacity-100"
-          >
-            <MoveVertical size={12} /> Diğer Tarafa Geç
-          </button>
-
           <div
             aria-hidden
             className="absolute right-0 top-0 hidden h-full w-[1px] bg-black/[0.08] md:block"
@@ -217,13 +210,6 @@ export default function PortalPage() {
               />
             </motion.button>
           </motion.div>
-
-          <button
-            onClick={() => handleEnter("magaza")}
-            className="absolute bottom-8 left-1/2 z-10 flex -translate-x-1/2 items-center gap-2 font-montserrat text-[10px] uppercase tracking-[0.25em] text-[#978E82] opacity-40 transition-opacity duration-300 hover:opacity-100"
-          >
-            <MoveVertical size={12} /> Diğer Tarafa Geç
-          </button>
         </motion.section>
       </div>
     </main>

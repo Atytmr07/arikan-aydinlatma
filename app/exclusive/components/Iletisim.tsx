@@ -24,25 +24,25 @@ export default function Iletisim() {
         <p className="mb-6 font-montserrat text-[10px] uppercase tracking-[0.25em] text-[#D4AF6E]">
           İletişim
         </p>
-        <h2 className="font-cormorant text-6xl font-light italic leading-tight text-[#F0EADF] md:text-8xl">
+        <h2 className="font-cormorant text-[2.75rem] font-light italic leading-tight text-[#F0EADF] sm:text-6xl md:text-8xl">
           Projenizi <span className="text-[#D4AF6E]">Konuşalım.</span>
         </h2>
         <p className="mt-8 font-montserrat text-sm font-light tracking-[0.1em] text-[#978E82]">
           {CONTACT.exclusiveLocation} · {CONTACT.phonePrimary}
         </p>
 
-        <div className="mt-12 flex flex-col gap-5 sm:flex-row sm:items-center">
+        <div className="mt-12 flex w-full flex-col gap-4 sm:w-auto sm:flex-row sm:items-center sm:gap-5">
           <a
             href={CONTACT.whatsapp}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center justify-center bg-[#D4AF6E] px-9 py-4 font-montserrat text-[10px] uppercase tracking-[0.25em] text-[#0A0908] transition-colors duration-300 hover:bg-[#E3C892]"
+            className="inline-flex w-full items-center justify-center bg-[#D4AF6E] px-9 py-4 font-montserrat text-[10px] uppercase tracking-[0.25em] text-[#0A0908] transition-colors duration-300 hover:bg-[#E3C892] sm:w-auto"
           >
             WhatsApp&apos;tan Proje Görüşmesi
           </a>
           <a
             href={CONTACT.phonePrimaryTel}
-            className="inline-flex items-center justify-center border border-[#D4AF6E]/40 px-9 py-4 font-montserrat text-[10px] uppercase tracking-[0.25em] text-[#F0EADF] transition-colors duration-300 hover:border-[#D4AF6E] hover:text-[#D4AF6E]"
+            className="inline-flex w-full items-center justify-center border border-[#D4AF6E]/40 px-9 py-4 font-montserrat text-[10px] uppercase tracking-[0.25em] text-[#F0EADF] transition-colors duration-300 hover:border-[#D4AF6E] hover:text-[#D4AF6E] sm:w-auto"
           >
             Telefon
           </a>

@@ -21,9 +21,9 @@ const REVIEWS: Review[] = [
     text: "Çalışanlar gayet ilgili. Alım aşamasından, satış sonrası ürünlerin tedarik hızı ve montajına kadar, gayet hızlı ve titiz çalıştılar.",
   },
   {
-    name: "Yandex Yorumcu",
+    name: "Barış Aktürk",
     source: "Google Yorumu",
-    text: "Çeşitleri görünce gözleriniz kamaşacak.",
+    text: "Çok kaliteli ve çeşitli ürünleri ile çözümler üreten, bunu yaparken de yüzlerinde gülümseme hiç eksik olmayan bir firma. Montaj konusunda da gerekli desteği sağlayan ve çözüm ortağı olan Antalya'nın en iyi aydınlatmacılarındandır.",
   },
 ];
 

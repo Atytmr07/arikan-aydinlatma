@@ -56,9 +56,15 @@ export default function Surec() {
         </motion.div>
 
         <div className="relative">
+          {/* desktop horizontal rail */}
           <div
             aria-hidden
             className="absolute left-0 top-[6px] hidden h-[1px] w-full bg-[#D4AF6E]/[0.22] md:block"
+          />
+          {/* mobile vertical rail */}
+          <div
+            aria-hidden
+            className="absolute bottom-3 left-1 top-3 w-px bg-[#D4AF6E]/20 md:hidden"
           />
 
           <motion.ol
@@ -66,18 +72,28 @@ export default function Surec() {
             initial="hidden"
             whileInView="show"
             viewport={{ once: true, margin: "-60px" }}
-            className="grid grid-cols-1 gap-12 md:grid-cols-4 md:gap-8"
+            className="grid grid-cols-1 gap-11 md:grid-cols-4 md:gap-8"
           >
             {STEPS.map((s) => (
-              <motion.li key={s.no} variants={step} className="relative md:pt-10">
+              <motion.li
+                key={s.no}
+                variants={step}
+                className="relative pl-9 md:pl-0 md:pt-10"
+              >
+                {/* mobile dot */}
+                <span
+                  aria-hidden
+                  className="absolute left-1 top-[11px] h-2.5 w-2.5 -translate-x-1/2 rounded-full bg-[#D4AF6E] md:hidden"
+                />
+                {/* desktop dot */}
                 <span
                   aria-hidden
                   className="absolute left-0 top-0 hidden h-3 w-3 -translate-y-[5px] rounded-full bg-[#D4AF6E] md:block"
                 />
-                <span className="block font-cormorant text-6xl italic leading-none text-[#D4AF6E]/30">
+                <span className="block font-cormorant text-5xl italic leading-none text-[#D4AF6E]/30 md:text-6xl">
                   {s.no}
                 </span>
-                <h3 className="mt-4 font-cormorant text-xl font-semibold text-[#F0EADF]">
+                <h3 className="mt-3 font-cormorant text-xl font-semibold text-[#F0EADF] md:mt-4">
                   {s.title}
                 </h3>
                 <p className="mt-2 font-montserrat text-sm font-light leading-loose text-[#978E82]">
