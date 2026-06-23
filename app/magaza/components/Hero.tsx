@@ -91,13 +91,15 @@ export default function Hero() {
           initial={{ opacity: 0, scale: 1.02 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
-          className="relative h-[42vh] w-full lg:h-[78vh]"
+          className="relative h-[56vh] w-full lg:h-[78vh]"
         >
           <SmartImage
-            alt="Arıkan Aydınlatma showroom — avize ve aydınlatma koleksiyonu"
+            src="/galeri/hero.jpg"
+            alt="Arıkan Aydınlatma showroom — pirinç kubbeli mermer lambader"
             brand="magaza"
             priority
             sizes="(max-width: 1024px) 100vw, 50vw"
+            className="object-[50%_40%]"
           />
           {/* floating glass Google badge */}
           <div className="glass-light absolute right-4 top-4 flex items-center gap-2 px-4 py-2.5">
