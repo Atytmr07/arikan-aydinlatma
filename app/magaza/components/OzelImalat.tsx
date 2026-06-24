@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { motion, type Variants } from "framer-motion";
-import { Ruler, PenTool, Hammer, ArrowRight, Sparkles } from "lucide-react";
+import { Ruler, PenTool, Hammer, ArrowRight } from "lucide-react";
 import { CONTACT } from "../../../lib/constants";
 
 const FEATURES = [
@@ -75,16 +75,6 @@ export default function OzelImalat() {
           viewport={{ once: true, margin: "-60px" }}
           className="order-1 lg:order-2"
         >
-          <motion.div
-            variants={fade}
-            className="mb-6 inline-flex items-center gap-2 border border-[#E11B22]/40 px-3 py-1.5"
-          >
-            <Sparkles size={13} className="text-[#E11B22]" />
-            <span className="font-jost text-[10px] uppercase tracking-[0.2em] text-[#D8CFC6]">
-              Çok az firmada olan bir hizmet
-            </span>
-          </motion.div>
-
           <motion.p
             variants={fade}
             className="mb-4 font-jost text-xs font-medium uppercase tracking-[0.2em] text-[#E11B22]"

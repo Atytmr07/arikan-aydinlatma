@@ -213,12 +213,9 @@ export default function Hero() {
                   className="absolute inset-0"
                 >
                   <SmartImage
-                    src="/galeri/galeri-04.jpg"
-                    alt="Arıkan Aydınlatma — altın halka avize, şık salon aydınlatması"
+                    alt="Arıkan Aydınlatma — görsel yakında"
                     brand="magaza"
-                    priority
                     sizes="(max-width: 1024px) 100vw, 50vw"
-                    className="object-[50%_35%]"
                   />
                 </motion.div>
                 <div

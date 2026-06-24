@@ -6,16 +6,17 @@ import { motion } from "framer-motion";
 interface Brand {
   name: string;
   logo: string;
-  /** Logo yükseklik sınıfı — her markanın içsel boşluğu farklı olduğu için
-   *  görsel olarak eşit dursunlar diye ayrı ayrı ayarlandı. */
+  /** Logo yükseklik ve genişlik sınıfı — her markanın içsel boşluğu farklı
+   *  olduğu için ayrı ayrı ayarlandı. Goya ortada ve bir tık daha büyük. */
   boxH: string;
+  maxW: string;
   url?: string;
 }
 
 const BRANDS: Brand[] = [
-  { name: "Goya", logo: "/markalar/goya.jpg", boxH: "h-12 md:h-16" },
-  { name: "Jupiter", logo: "/markalar/jupiter.png", boxH: "h-16 md:h-[88px]" },
-  { name: "MOLLED", logo: "/markalar/molled.png", boxH: "h-9 md:h-12" },
+  { name: "Jupiter", logo: "/markalar/jupiter.png", boxH: "h-14 md:h-[76px]", maxW: "max-w-[170px]" },
+  { name: "Goya", logo: "/markalar/goya.jpg", boxH: "h-16 md:h-[112px]", maxW: "max-w-[280px]" },
+  { name: "MOLLED", logo: "/markalar/molled.png", boxH: "h-8 md:h-11", maxW: "max-w-[170px]" },
 ];
 
 export default function Markalar() {
@@ -45,7 +46,7 @@ export default function Markalar() {
           {BRANDS.map((brand, i) => {
             const logo = (
               <div
-                className={`relative w-full max-w-[220px] ${brand.boxH} opacity-90 transition-all duration-500 group-hover:opacity-100`}
+                className={`relative w-full ${brand.maxW} ${brand.boxH} opacity-90 transition-all duration-500 group-hover:opacity-100`}
               >
                 <Image
                   src={brand.logo}

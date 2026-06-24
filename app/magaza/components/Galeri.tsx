@@ -13,6 +13,7 @@ interface Shot {
 // Yeni görsel eklemek için: dosyayı public/galeri/ içine koyun ve buraya
 // { src, w, h } olarak ekleyin (w/h görselin gerçek piksel boyutu).
 const GALLERY: Shot[] = [
+  { src: "/galeri/galeri-04.jpg", w: 1200, h: 1600 },
   { src: "/galeri/galeri-03.jpg", w: 1600, h: 1200 },
   { src: "/galeri/galeri-10.jpg", w: 1200, h: 1600 },
   { src: "/galeri/galeri-01.jpg", w: 1600, h: 1200 },
