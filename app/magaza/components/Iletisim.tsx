@@ -5,7 +5,7 @@ import { MapPin, Phone, Clock, Instagram, MessageCircle } from "lucide-react";
 import { CONTACT } from "../../../lib/constants";
 
 const MAP_SRC =
-  "https://www.google.com/maps?q=Arıkan+Aydınlatma+Şirinyalı+1536.+Sk.+No:2+Muratpaşa+Antalya&output=embed";
+  "https://www.google.com/maps?q=Arıkan+Aydınlatma+Sinanoğlu+Cad.+Şirinyalı+Muratpaşa+Antalya&output=embed";
 
 export default function Iletisim() {
   return (

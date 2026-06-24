@@ -167,7 +167,7 @@ export default function Hero() {
                 href="#katalog"
                 className="group inline-flex items-center justify-center gap-3 bg-[#E11B22] px-8 py-4 font-jost text-xs uppercase tracking-[0.18em] text-white transition-colors duration-300 hover:bg-[#BE0F16]"
               >
-                Kataloğu İncele
+                Katalogları İncele
                 <ArrowDown
                   size={15}
                   className="transition-transform duration-300 group-hover:translate-y-1"
@@ -213,12 +213,12 @@ export default function Hero() {
                   className="absolute inset-0"
                 >
                   <SmartImage
-                    src="/galeri/hero.jpg"
-                    alt="Arıkan Aydınlatma showroom — pirinç kubbeli mermer lambader"
+                    src="/galeri/galeri-04.jpg"
+                    alt="Arıkan Aydınlatma — altın halka avize, şık salon aydınlatması"
                     brand="magaza"
                     priority
                     sizes="(max-width: 1024px) 100vw, 50vw"
-                    className="object-[50%_38%]"
+                    className="object-[50%_35%]"
                   />
                 </motion.div>
                 <div

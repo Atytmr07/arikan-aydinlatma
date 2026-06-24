@@ -70,13 +70,14 @@ export default function Katalog() {
           className="lg:col-span-2"
         >
           <p className="mb-5 font-jost text-xs font-medium uppercase tracking-[0.2em] text-[#E11B22]">
-            Ürün Kataloğu
+            Kataloglar
           </p>
           <h2 className="font-marcellus text-4xl leading-tight text-[#16130F] md:text-5xl">
-            Tüm Ürünlerimiz, Tek Katalogda.
+            Marka Kataloglarımız.
           </h2>
           <p className="mt-6 font-jost text-base font-light leading-relaxed text-[#6A625A]">
-            Dönemsel koleksiyonlarımızı PDF olarak inceleyin ya da indirin.
+            Çalıştığımız markaların güncel kataloglarını PDF olarak inceleyin ya
+            da indirin.
           </p>
           {lastUpdated && (
             <p className="mt-8 font-jost text-xs uppercase tracking-[0.15em] text-[#8A8178]">

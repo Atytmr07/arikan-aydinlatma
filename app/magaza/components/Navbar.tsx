@@ -11,6 +11,7 @@ import { CONTACT } from "../../../lib/constants";
 const NAV_LINKS = [
   { label: "Kategoriler", href: "#kategoriler" },
   { label: "Galeri", href: "#galeri" },
+  { label: "Özel İmalat", href: "#ozel-imalat" },
   { label: "Markalar", href: "#markalar" },
   { label: "Katalog", href: "#katalog" },
   { label: "İletişim", href: "#iletisim" },
@@ -47,7 +48,7 @@ export default function Navbar() {
             </span>
           </Link>
 
-          <ul className="hidden items-center gap-9 lg:flex">
+          <ul className="hidden items-center gap-6 lg:flex xl:gap-8">
             {NAV_LINKS.map((l) => (
               <li key={l.href}>
                 <a

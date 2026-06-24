@@ -46,8 +46,8 @@ export default function Footer() {
               </span>
             </span>
             <p className="mt-5 max-w-xs font-montserrat text-sm font-light leading-loose text-[#978E82]">
-              Mimarlar ve iç mimarlar için özel çizim aydınlatma tasarımı ve
-              mimari aydınlatma danışmanlığı.
+              Mimarlar ve iç mimarlar için özel çizim aydınlatma tasarımı ve özel
+              imalat.
             </p>
           </div>
 

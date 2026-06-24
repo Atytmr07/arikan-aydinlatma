@@ -50,8 +50,8 @@ export default function Vizyon() {
               özel aydınlatma çözümleri geliştiririz.
             </p>
             <p>
-              Özel çizim aydınlatma tasarımı, mimari aydınlatma danışmanlığı ve
-              uçtan uca proje yönetimi sunuyoruz. Antalya merkezli ekibimizle
+              Özel çizim aydınlatma tasarımı, özel imalat ve uçtan uca proje
+              yönetimi sunuyoruz. Antalya merkezli ekibimizle
               Türkiye genelinde konut, otel, ofis ve ticari projelere hizmet
               veriyoruz.
             </p>

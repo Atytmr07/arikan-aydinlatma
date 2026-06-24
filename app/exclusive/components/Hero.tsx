@@ -91,8 +91,8 @@ export default function Hero() {
           transition={{ duration: 1, delay: 1.05 }}
           className="mt-7 max-w-xl font-montserrat text-sm font-light leading-loose text-[#A89E90] md:mt-9"
         >
-          Mimarlar ve iç mimarlar için özel çizim aydınlatma projeleri ve mimari
-          danışmanlık.
+          Mimarlar ve iç mimarlar için özel çizim aydınlatma projeleri ve özel
+          imalat çözümleri.
         </motion.p>
 
         <motion.div

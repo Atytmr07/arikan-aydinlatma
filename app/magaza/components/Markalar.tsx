@@ -13,9 +13,9 @@ interface Brand {
 }
 
 const BRANDS: Brand[] = [
+  { name: "Goya", logo: "/markalar/goya.jpg", boxH: "h-12 md:h-16" },
   { name: "Jupiter", logo: "/markalar/jupiter.png", boxH: "h-16 md:h-[88px]" },
   { name: "MOLLED", logo: "/markalar/molled.png", boxH: "h-9 md:h-12" },
-  { name: "Goya", logo: "/markalar/goya.jpg", boxH: "h-12 md:h-16" },
 ];
 
 export default function Markalar() {
