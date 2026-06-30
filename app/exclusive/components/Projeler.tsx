@@ -28,6 +28,7 @@ const PROJECTS: Project[] = [
     location: "Antalya",
     description:
       "Doğal ışıkla bütünleşen, gece ve gündüz iki ayrı karaktere bürünen bütüncül bir aydınlatma kurgusu. Gizli LED hatları ve dekoratif sarkıtlarla katmanlı bir atmosfer.",
+    images: ["/projeler/exc-01.jpg", "/projeler/exc-02.jpg"],
   },
   {
     title: "Otel Lobi & Resepsiyon",
@@ -36,6 +37,7 @@ const PROJECTS: Project[] = [
     location: "Belek",
     description:
       "Misafiri karşılayan ilk anı tasarlayan, ölçeği ve sıcaklığıyla davetkâr bir giriş. Özel üretim avize ve dolaylı aydınlatmanın dengesi.",
+    images: ["/projeler/exc-03.jpg", "/projeler/exc-04.jpg"],
   },
   {
     title: "Restoran & Cafe",
@@ -44,6 +46,7 @@ const PROJECTS: Project[] = [
     location: "Kaleiçi",
     description:
       "Menüyle uyumlu renk sıcaklığı ve masa bazlı odak ışıkla samimi bir akşam atmosferi. Mekânın dokusunu öne çıkaran vurgu aydınlatmaları.",
+    images: ["/projeler/exc-05.jpg", "/projeler/exc-06.jpg"],
   },
 ];
 

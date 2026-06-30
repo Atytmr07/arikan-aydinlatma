@@ -10,6 +10,7 @@ import { CONTACT } from "../../../lib/constants";
 const NAV_LINKS = [
   { label: "Vizyon", href: "#vizyon" },
   { label: "Projeler", href: "#projeler" },
+  { label: "Galeri", href: "#galeri" },
   { label: "Süreç", href: "#surec" },
   { label: "İletişim", href: "#iletisim" },
 ];
