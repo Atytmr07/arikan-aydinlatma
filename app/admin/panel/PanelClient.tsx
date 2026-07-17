@@ -11,29 +11,13 @@ import {
   AlertCircle,
   LogOut,
 } from "lucide-react";
-import { upload } from "@vercel/blob/client";
 import { logout } from "../actions";
 import { MagazaMark } from "../../components/BrandMarks";
 
-// On Vercel (with Blob) the browser uploads directly to Blob storage, avoiding
-// the serverless request-body size limit. Locally this is unset → filesystem.
-const USE_BLOB = process.env.NEXT_PUBLIC_USE_BLOB === "1";
-
-function slugify(input: string): string {
-  return (
-    input
-      .toLocaleLowerCase("tr-TR")
-      .replace(/ı/g, "i")
-      .replace(/ş/g, "s")
-      .replace(/ğ/g, "g")
-      .replace(/ü/g, "u")
-      .replace(/ö/g, "o")
-      .replace(/ç/g, "c")
-      .replace(/[^a-z0-9]+/g, "-")
-      .replace(/^-+|-+$/g, "")
-      .slice(0, 50) || "katalog"
-  );
-}
+// In production the browser uploads directly to Firebase Storage via a signed
+// URL, avoiding the serverless request-body size limit. Locally this is
+// unset → filesystem upload through /api/admin/upload.
+const USE_FIREBASE = process.env.NEXT_PUBLIC_USE_FIREBASE === "1";
 
 interface KatalogRow {
   id: string;
@@ -118,22 +102,31 @@ export default function PanelClient() {
     setUploading(true);
     setFeedback(null);
     try {
-      if (USE_BLOB) {
-        // 1) Upload the PDF straight to Blob (no serverless size limit).
-        const blob = await upload(`kataloglar/${slugify(name)}.pdf`, file, {
-          access: "public",
-          handleUploadUrl: "/api/admin/blob-token",
-          contentType: "application/pdf",
-          multipart: true, // chunked — reliable for large files / slow links
+      if (USE_FIREBASE) {
+        // 1) Get a short-lived signed upload URL from the server.
+        const urlRes = await fetch("/api/admin/upload-url", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ name: name.trim() }),
         });
-        // 2) Register the metadata.
+        const urlData = await urlRes.json();
+        if (!urlRes.ok) {
+          throw new Error(urlData.error ?? "Yükleme başarısız.");
+        }
+        // 2) PUT the PDF straight to Firebase Storage (no serverless size limit).
+        const putRes = await fetch(urlData.uploadUrl, {
+          method: "PUT",
+          headers: { "Content-Type": "application/pdf" },
+          body: file,
+        });
+        if (!putRes.ok) throw new Error("Dosya yüklenemedi.");
+        // 3) Register the metadata.
         const res = await fetch("/api/admin/kataloglar", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             name: name.trim(),
-            url: blob.url,
-            filename: blob.pathname.split("/").pop(),
+            objectPath: urlData.objectPath,
           }),
         });
         const data = await res.json();

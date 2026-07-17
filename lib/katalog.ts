@@ -1,6 +1,7 @@
 import { promises as fs } from "fs";
 import path from "path";
-import { put, del, list } from "@vercel/blob";
+import { randomUUID } from "crypto";
+import { getBucket, useFirebase } from "./firebase";
 
 export interface Katalog {
   id: string;
@@ -16,28 +17,40 @@ interface Manifest {
 }
 
 // Storage backend is chosen automatically:
-//  - Vercel (BLOB_READ_WRITE_TOKEN present) → Vercel Blob (durable, serverless-safe)
-//  - Local dev (no token)                  → filesystem under public/ + data/
-const useBlob = !!process.env.BLOB_READ_WRITE_TOKEN;
-
+//  - Firebase env vars present → Firebase Storage (durable, serverless-safe)
+//  - Local dev (no env vars)   → filesystem under public/ + data/
 const MANIFEST_PATH = path.join(process.cwd(), "data", "katalog-manifest.json");
-const MANIFEST_BLOB = "katalog-manifest.json";
+const MANIFEST_OBJECT = "katalog-manifest.json";
 const UPLOAD_DIR = path.join(process.cwd(), "public", "kataloglar");
+const PDF_PREFIX = "kataloglar/";
+
+export function slugify(input: string): string {
+  return (
+    input
+      .toLocaleLowerCase("tr-TR")
+      .replace(/ı/g, "i")
+      .replace(/ş/g, "s")
+      .replace(/ğ/g, "g")
+      .replace(/ü/g, "u")
+      .replace(/ö/g, "o")
+      .replace(/ç/g, "c")
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-+|-+$/g, "")
+      .slice(0, 50) || "katalog"
+  );
+}
 
 export async function readManifest(): Promise<Manifest> {
-  if (useBlob) {
+  if (useFirebase) {
     try {
-      const { blobs } = await list({ prefix: MANIFEST_BLOB, limit: 1 });
-      const found = blobs.find((b) => b.pathname === MANIFEST_BLOB);
-      if (!found) return { kataloglar: [] };
-      // uploadedAt changes on every overwrite → use it to bust the CDN cache.
-      const bust = new Date(found.uploadedAt).getTime();
-      const res = await fetch(`${found.url}?t=${bust}`, { cache: "no-store" });
-      if (!res.ok) return { kataloglar: [] };
-      const data = (await res.json()) as Manifest;
+      const [buf] = await getBucket().file(MANIFEST_OBJECT).download();
+      const data = JSON.parse(buf.toString("utf-8")) as Manifest;
       return { kataloglar: data.kataloglar ?? [] };
     } catch (err) {
-      console.error("readManifest (blob) failed:", err);
+      // A missing manifest (first run) is normal — anything else is logged.
+      if ((err as { code?: number }).code !== 404) {
+        console.error("readManifest (firebase) failed:", err);
+      }
       return { kataloglar: [] };
     }
   }
@@ -52,13 +65,12 @@ export async function readManifest(): Promise<Manifest> {
 }
 
 export async function writeManifest(manifest: Manifest): Promise<void> {
-  if (useBlob) {
-    await put(MANIFEST_BLOB, JSON.stringify(manifest, null, 2), {
-      access: "public",
-      contentType: "application/json",
-      addRandomSuffix: false,
-      allowOverwrite: true,
-    });
+  if (useFirebase) {
+    await getBucket()
+      .file(MANIFEST_OBJECT)
+      .save(JSON.stringify(manifest, null, 2), {
+        contentType: "application/json",
+      });
     return;
   }
 
@@ -68,11 +80,11 @@ export async function writeManifest(manifest: Manifest): Promise<void> {
 
 // Removes the stored PDF. Best-effort — the manifest is the source of truth.
 export async function deletePdf(katalog: Katalog): Promise<void> {
-  if (useBlob) {
+  if (useFirebase) {
     try {
-      await del(katalog.url);
+      await getBucket().file(PDF_PREFIX + katalog.filename).delete();
     } catch (err) {
-      console.error("deletePdf (blob) failed:", err);
+      console.error("deletePdf (firebase) failed:", err);
     }
     return;
   }
@@ -82,4 +94,49 @@ export async function deletePdf(katalog: Katalog): Promise<void> {
   } catch {
     /* already gone — ignore */
   }
+}
+
+// ── Firebase-only helpers for the direct-from-browser upload flow ─────
+
+// Mints a short-lived V4 signed URL so the browser PUTs the PDF straight to
+// Firebase Storage, bypassing the ~4.5 MB serverless request-body limit.
+export async function createUploadUrl(
+  name: string
+): Promise<{ uploadUrl: string; objectPath: string }> {
+  const objectPath = `${PDF_PREFIX}${slugify(name)}-${randomUUID().slice(0, 8)}.pdf`;
+  const [uploadUrl] = await getBucket()
+    .file(objectPath)
+    .getSignedUrl({
+      version: "v4",
+      action: "write",
+      expires: Date.now() + 15 * 60 * 1000,
+      contentType: "application/pdf",
+    });
+  return { uploadUrl, objectPath };
+}
+
+// Called after the browser finishes its PUT: verifies the object exists,
+// attaches a Firebase download token, and returns the public download URL.
+// Token URLs work regardless of bucket ACLs or Storage security rules.
+export async function finalizePdf(objectPath: string): Promise<string> {
+  if (
+    !objectPath.startsWith(PDF_PREFIX) ||
+    !objectPath.endsWith(".pdf") ||
+    objectPath.includes("..")
+  ) {
+    throw new Error("Geçersiz dosya yolu.");
+  }
+
+  const bucket = getBucket();
+  const file = bucket.file(objectPath);
+  const [exists] = await file.exists();
+  if (!exists) throw new Error("Yüklenen dosya bulunamadı.");
+
+  const token = randomUUID();
+  await file.setMetadata({
+    contentType: "application/pdf",
+    metadata: { firebaseStorageDownloadTokens: token },
+  });
+
+  return `https://firebasestorage.googleapis.com/v0/b/${bucket.name}/o/${encodeURIComponent(objectPath)}?alt=media&token=${token}`;
 }

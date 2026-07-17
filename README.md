@@ -63,25 +63,46 @@ backend is selected automatically in [`lib/katalog.ts`](lib/katalog.ts):
 
 | Environment | PDFs | Index (manifest) |
 |-------------|------|------------------|
-| **Local dev** (no `BLOB_READ_WRITE_TOKEN`) | `public/kataloglar/` | `data/katalog-manifest.json` |
-| **Vercel** (`BLOB_READ_WRITE_TOKEN` set)   | Vercel Blob | `katalog-manifest.json` in Blob |
+| **Local dev** (no `FIREBASE_*` vars) | `public/kataloglar/` | `data/katalog-manifest.json` |
+| **Production** (`FIREBASE_*` vars set) | Firebase Storage | `katalog-manifest.json` in the bucket (private) |
 
 Endpoints:
 
 - `GET /api/katalog` — public; returns **active** catalogs only.
 - `GET/POST/DELETE/PATCH /api/admin/kataloglar` — auth; list / register / remove / toggle.
 - `POST /api/admin/upload` — auth; **filesystem mode only** (server-side upload).
-- `POST /api/admin/blob-token` — auth; mints a token so the browser uploads the
-  PDF **directly to Blob** (sidesteps the ~4.5 MB serverless body limit).
+- `POST /api/admin/upload-url` — auth; mints a signed URL so the browser uploads
+  the PDF **directly to Firebase Storage** (sidesteps the ~4.5 MB serverless
+  body limit). Public download links use Firebase download tokens, so no
+  Storage security-rule changes are needed — default (deny-all) rules are fine.
+
+### Firebase setup (one-time)
+
+1. Create a project at [console.firebase.google.com](https://console.firebase.google.com)
+   and upgrade it to the **Blaze** plan (required for Storage; usage stays free
+   within the ~5 GB no-cost quota).
+2. Enable **Storage** (Build → Storage → Get started). Note the bucket name,
+   e.g. `my-project.firebasestorage.app`.
+3. Create a service-account key: Project settings → Service accounts →
+   **Generate new private key**. The JSON contains `project_id`,
+   `client_email`, and `private_key`.
+4. Allow browser uploads (CORS) — in [Cloud Shell](https://console.cloud.google.com/)
+   run once (upload `scripts/cors.json` first, or paste its content):
+
+   ```sh
+   gcloud storage buckets update gs://MY_BUCKET --cors-file=cors.json
+   ```
 
 ### Deploying to Vercel
 
 1. Push the repo and import it in Vercel.
-2. In the project's **Storage** tab, create a **Blob** store and connect it —
-   this auto-injects `BLOB_READ_WRITE_TOKEN`.
-3. Add env vars: `ADMIN_PASSWORD` (a strong secret) and `NEXT_PUBLIC_USE_BLOB=1`.
-4. Redeploy. The admin panel now uploads catalogs straight to Blob; the public
-   site reads them via `/api/katalog`. No server maintenance, no database.
+2. Add env vars: `ADMIN_PASSWORD` (a strong secret), `NEXT_PUBLIC_USE_FIREBASE=1`,
+   and the four values from the service-account JSON: `FIREBASE_PROJECT_ID`,
+   `FIREBASE_CLIENT_EMAIL`, `FIREBASE_PRIVATE_KEY` (paste the whole key,
+   including the `\n` sequences), `FIREBASE_STORAGE_BUCKET`.
+3. Redeploy. The admin panel now uploads catalogs straight to Firebase Storage;
+   the public site reads them via `/api/katalog`. No server maintenance, no
+   database.
 
 ## Routes
 

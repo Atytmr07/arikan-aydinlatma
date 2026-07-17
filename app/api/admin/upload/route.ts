@@ -2,28 +2,17 @@ import { NextResponse } from "next/server";
 import { promises as fs } from "fs";
 import path from "path";
 import { randomUUID } from "crypto";
-import { readManifest, writeManifest, type Katalog } from "../../../../lib/katalog";
+import {
+  readManifest,
+  writeManifest,
+  slugify,
+  type Katalog,
+} from "../../../../lib/katalog";
 
 export const dynamic = "force-dynamic";
 
 const UPLOAD_DIR = path.join(process.cwd(), "public", "kataloglar");
 const MAX_BYTES = 100 * 1024 * 1024; // 100 MB
-
-function slugify(input: string): string {
-  return (
-    input
-      .toLocaleLowerCase("tr-TR")
-      .replace(/ı/g, "i")
-      .replace(/ş/g, "s")
-      .replace(/ğ/g, "g")
-      .replace(/ü/g, "u")
-      .replace(/ö/g, "o")
-      .replace(/ç/g, "c")
-      .replace(/[^a-z0-9]+/g, "-")
-      .replace(/^-+|-+$/g, "")
-      .slice(0, 50) || "katalog"
-  );
-}
 
 // POST — receives FormData { file, name }, stores the PDF, updates the manifest.
 export async function POST(req: Request) {

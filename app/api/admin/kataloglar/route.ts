@@ -4,6 +4,7 @@ import {
   readManifest,
   writeManifest,
   deletePdf,
+  finalizePdf,
   type Katalog,
 } from "../../../../lib/katalog";
 
@@ -18,27 +19,29 @@ export async function GET() {
   return NextResponse.json({ kataloglar: sorted });
 }
 
-// POST — register catalog metadata after a direct-to-Blob client upload.
-// Body: { name, url, filename }. (Filesystem mode uses /api/admin/upload instead.)
+// POST — register catalog metadata after a direct-to-Firebase client upload.
+// Body: { name, objectPath }. (Filesystem mode uses /api/admin/upload instead.)
 export async function POST(req: Request) {
   try {
-    const { name, url, filename } = (await req.json()) as {
+    const { name, objectPath } = (await req.json()) as {
       name?: string;
-      url?: string;
-      filename?: string;
+      objectPath?: string;
     };
 
-    if (!name?.trim() || !url) {
+    if (!name?.trim() || !objectPath) {
       return NextResponse.json(
-        { error: "name ve url gereklidir." },
+        { error: "name ve objectPath gereklidir." },
         { status: 400 }
       );
     }
 
+    // Verifies the uploaded object and mints its public download URL.
+    const url = await finalizePdf(objectPath);
+
     const entry: Katalog = {
       id: randomUUID(),
       name: name.trim(),
-      filename: filename || url.split("/").pop() || "katalog.pdf",
+      filename: objectPath.split("/").pop() || "katalog.pdf",
       url,
       uploadedAt: new Date().toISOString(),
       active: true,
