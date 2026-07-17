@@ -268,7 +268,7 @@ export default function PanelClient() {
               {file ? file.name : "PDF'i buraya sürükleyin veya tıklayın"}
             </p>
             <p className="font-jost text-xs text-[#888880]">
-              Maksimum 100 MB · yalnızca .pdf
+              Büyük dosyalar desteklenir · yalnızca .pdf
             </p>
             <input
               ref={inputRef}
