@@ -58,51 +58,50 @@ Auth is enforced by [`middleware.ts`](middleware.ts), which guards
 
 ### Catalog data flow
 
-No database is needed — catalogs are a few PDFs plus a small JSON index. Storage
-backend is selected automatically in [`lib/katalog.ts`](lib/katalog.ts):
+No database and **no service-account key** — catalogs are a few PDFs plus a
+small JSON index (`katalog-manifest.json`), both stored in **Firebase Storage**.
+Everything runs through the Firebase **Web SDK** ([`lib/firebaseClient.ts`](lib/firebaseClient.ts)):
 
-| Environment | PDFs | Index (manifest) |
-|-------------|------|------------------|
-| **Local dev** (no `FIREBASE_*` vars) | `public/kataloglar/` | `data/katalog-manifest.json` |
-| **Production** (`FIREBASE_*` vars set) | Firebase Storage | `katalog-manifest.json` in the bucket (private) |
+- **Reads** are public (Storage Rules `allow read: if true`). The manifest and
+  PDFs are served via token-free media URLs. `GET /api/katalog` (and
+  `GET /api/manifest`) fetch the manifest server-side and return JSON.
+- **Writes** (upload / delete / toggle) happen in the browser via the Web SDK,
+  gated by **Firebase Auth** — only the signed-in admin (by UID) can write.
 
-Endpoints:
-
-- `GET /api/katalog` — public; returns **active** catalogs only.
-- `GET/POST/DELETE/PATCH /api/admin/kataloglar` — auth; list / register / remove / toggle.
-- `POST /api/admin/upload` — auth; **filesystem mode only** (server-side upload).
-- `POST /api/admin/upload-url` — auth; mints a signed URL so the browser uploads
-  the PDF **directly to Firebase Storage** (sidesteps the ~4.5 MB serverless
-  body limit). Public download links use Firebase download tokens, so no
-  Storage security-rule changes are needed — default (deny-all) rules are fine.
+The Firebase web config in `lib/firebaseClient.ts` is **public by design** (it
+ships in the client bundle); security comes from Storage Rules + Auth, not from
+hiding it.
 
 ### Firebase setup (one-time)
 
-1. Create a project at [console.firebase.google.com](https://console.firebase.google.com)
-   and upgrade it to the **Blaze** plan (required for Storage; usage stays free
-   within the ~5 GB no-cost quota).
-2. Enable **Storage** (Build → Storage → Get started). Note the bucket name,
-   e.g. `my-project.firebasestorage.app`.
-3. Create a service-account key: Project settings → Service accounts →
-   **Generate new private key**. The JSON contains `project_id`,
-   `client_email`, and `private_key`.
-4. Allow browser uploads (CORS) — in [Cloud Shell](https://console.cloud.google.com/)
-   run once (upload `scripts/cors.json` first, or paste its content):
+1. Create a project and upgrade to the **Blaze** plan (required for Storage;
+   stays free within the ~5 GB / 100 GB-egress no-cost quota).
+2. Enable **Storage** (Build → Storage → Get started).
+3. Enable **Authentication → Email/Password**, then add one admin user
+   (Authentication → Users → Add user). This is the panel login. Copy its **UID**.
+4. Storage → **Rules** → publish:
 
-   ```sh
-   gcloud storage buckets update gs://MY_BUCKET --cors-file=cors.json
    ```
+   rules_version = '2';
+   service firebase.storage {
+     match /b/{bucket}/o {
+       match /{allPaths=**} {
+         allow read: if true;
+         allow write: if request.auth != null
+                      && request.auth.uid == "PASTE_ADMIN_UID";
+       }
+     }
+   }
+   ```
+
+5. Put the web config values into [`lib/firebaseClient.ts`](lib/firebaseClient.ts)
+   (Project settings → General → your web app).
 
 ### Deploying to Vercel
 
-1. Push the repo and import it in Vercel.
-2. Add env vars: `ADMIN_PASSWORD` (a strong secret), `NEXT_PUBLIC_USE_FIREBASE=1`,
-   and the four values from the service-account JSON: `FIREBASE_PROJECT_ID`,
-   `FIREBASE_CLIENT_EMAIL`, `FIREBASE_PRIVATE_KEY` (paste the whole key,
-   including the `\n` sequences), `FIREBASE_STORAGE_BUCKET`.
-3. Redeploy. The admin panel now uploads catalogs straight to Firebase Storage;
-   the public site reads them via `/api/katalog`. No server maintenance, no
-   database.
+Just push and import — **no environment variables needed** for storage. The admin
+signs in at `/admin` with the Firebase email/password; uploads go straight to
+Firebase Storage from the browser. No server maintenance, no database, no keys.
 
 ## Routes
 
@@ -111,6 +110,6 @@ Endpoints:
 | `/` | Static | Split-screen portal |
 | `/magaza` | Static | Retail store |
 | `/exclusive` | Static | Studio portfolio |
-| `/admin` | Dynamic | Login (reads cookie) |
-| `/admin/panel` | Dynamic | Catalog manager |
-| `/api/*` | Dynamic | Catalog endpoints |
+| `/admin` | Static | Firebase Auth login + catalog manager (client-gated) |
+| `/api/katalog` | Dynamic | Public — active catalogs |
+| `/api/manifest` | Dynamic | Full manifest for the admin panel |

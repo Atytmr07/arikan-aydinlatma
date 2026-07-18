@@ -3,22 +3,17 @@ import { storageMediaUrl, MANIFEST_OBJECT, type Manifest } from "../../../lib/ka
 
 export const dynamic = "force-dynamic";
 
-// Public catalog list. Reads the manifest straight from Firebase Storage via a
-// token-free media URL (Storage Rules grant public read). No credentials.
+// Full manifest (all catalogs, active + hidden) for the admin panel. Same-origin
+// so the browser avoids CORS; the server fetches the public media URL. Contains
+// no secrets — the referenced PDFs are public anyway.
 export async function GET(): Promise<NextResponse> {
   try {
     const res = await fetch(`${storageMediaUrl(MANIFEST_OBJECT)}&t=${Date.now()}`, {
       cache: "no-store",
     });
     if (!res.ok) return NextResponse.json({ kataloglar: [] });
-
     const data = (await res.json()) as Manifest;
-    const kataloglar = (data.kataloglar ?? [])
-      .filter((k) => k.active)
-      .sort((a, b) => b.uploadedAt.localeCompare(a.uploadedAt))
-      .map(({ id, name, url, uploadedAt }) => ({ id, name, url, uploadedAt }));
-
-    return NextResponse.json({ kataloglar });
+    return NextResponse.json({ kataloglar: data.kataloglar ?? [] });
   } catch {
     return NextResponse.json({ kataloglar: [] });
   }

@@ -11,13 +11,15 @@ import {
   AlertCircle,
   LogOut,
 } from "lucide-react";
-import { logout } from "../actions";
+import { signOut } from "firebase/auth";
+import {
+  auth,
+  listCatalogs,
+  uploadCatalog,
+  deleteCatalog,
+  setCatalogActive,
+} from "../../../lib/firebaseClient";
 import { MagazaMark } from "../../components/BrandMarks";
-
-// In production the browser uploads directly to Firebase Storage via a signed
-// URL, avoiding the serverless request-body size limit. Locally this is
-// unset → filesystem upload through /api/admin/upload.
-const USE_FIREBASE = process.env.NEXT_PUBLIC_USE_FIREBASE === "1";
 
 interface KatalogRow {
   id: string;
@@ -56,10 +58,8 @@ export default function PanelClient() {
 
   const fetchList = useCallback(async () => {
     try {
-      const res = await fetch("/api/admin/kataloglar", { cache: "no-store" });
-      if (!res.ok) throw new Error();
-      const data = await res.json();
-      setItems(data.kataloglar ?? []);
+      const kataloglar = await listCatalogs();
+      setItems(kataloglar);
     } catch {
       setFeedback({ type: "error", text: "Katalog listesi yüklenemedi." });
     } finally {
@@ -102,44 +102,7 @@ export default function PanelClient() {
     setUploading(true);
     setFeedback(null);
     try {
-      if (USE_FIREBASE) {
-        // 1) Get a short-lived signed upload URL from the server.
-        const urlRes = await fetch("/api/admin/upload-url", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ name: name.trim() }),
-        });
-        const urlData = await urlRes.json();
-        if (!urlRes.ok) {
-          throw new Error(urlData.error ?? "Yükleme başarısız.");
-        }
-        // 2) PUT the PDF straight to Firebase Storage (no serverless size limit).
-        const putRes = await fetch(urlData.uploadUrl, {
-          method: "PUT",
-          headers: { "Content-Type": "application/pdf" },
-          body: file,
-        });
-        if (!putRes.ok) throw new Error("Dosya yüklenemedi.");
-        // 3) Register the metadata.
-        const res = await fetch("/api/admin/kataloglar", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            name: name.trim(),
-            objectPath: urlData.objectPath,
-          }),
-        });
-        const data = await res.json();
-        if (!res.ok) throw new Error(data.error ?? "Yükleme başarısız.");
-      } else {
-        // Filesystem mode (local dev): send through the server route.
-        const fd = new FormData();
-        fd.append("file", file);
-        fd.append("name", name.trim());
-        const res = await fetch("/api/admin/upload", { method: "POST", body: fd });
-        const data = await res.json();
-        if (!res.ok) throw new Error(data.error ?? "Yükleme başarısız.");
-      }
+      await uploadCatalog(name.trim(), file);
       setFeedback({ type: "ok", text: "Katalog başarıyla yüklendi." });
       setFile(null);
       setName("");
@@ -158,12 +121,7 @@ export default function PanelClient() {
   const handleDelete = async (id: string) => {
     if (!confirm("Bu katalog kalıcı olarak silinsin mi?")) return;
     try {
-      const res = await fetch("/api/admin/kataloglar", {
-        method: "DELETE",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ id }),
-      });
-      if (!res.ok) throw new Error();
+      await deleteCatalog(id);
       setItems((prev) => prev.filter((i) => i.id !== id));
       setFeedback({ type: "ok", text: "Katalog kaldırıldı." });
     } catch {
@@ -173,16 +131,9 @@ export default function PanelClient() {
 
   const handleToggle = async (id: string, active: boolean) => {
     // optimistic
-    setItems((prev) =>
-      prev.map((i) => (i.id === id ? { ...i, active } : i))
-    );
+    setItems((prev) => prev.map((i) => (i.id === id ? { ...i, active } : i)));
     try {
-      const res = await fetch("/api/admin/kataloglar", {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ id, active }),
-      });
-      if (!res.ok) throw new Error();
+      await setCatalogActive(id, active);
     } catch {
       // revert
       setItems((prev) =>
@@ -208,14 +159,13 @@ export default function PanelClient() {
               </p>
             </div>
           </div>
-          <form action={logout}>
-            <button
-              type="submit"
-              className="inline-flex items-center gap-2 border border-white/[0.12] px-4 py-2.5 font-jost text-[11px] uppercase tracking-[0.15em] text-[#888880] transition-colors duration-300 hover:border-[#E11B22] hover:text-[#E11B22]"
-            >
-              <LogOut size={14} /> Çıkış Yap
-            </button>
-          </form>
+          <button
+            type="button"
+            onClick={() => signOut(auth)}
+            className="inline-flex items-center gap-2 border border-white/[0.12] px-4 py-2.5 font-jost text-[11px] uppercase tracking-[0.15em] text-[#888880] transition-colors duration-300 hover:border-[#E11B22] hover:text-[#E11B22]"
+          >
+            <LogOut size={14} /> Çıkış Yap
+          </button>
         </div>
       </header>
 
