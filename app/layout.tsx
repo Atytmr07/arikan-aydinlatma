@@ -1,42 +1,48 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
+import {
+  SITE_URL,
+  SITE_NAME,
+  DEFAULT_TITLE,
+  DEFAULT_DESCRIPTION,
+  OG_IMAGE,
+  localBusinessJsonLd,
+} from "../lib/seo";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://www.arikanaydinlatma.com.tr"),
+  metadataBase: new URL(SITE_URL),
   title: {
-    default:
-      "Arıkan Aydınlatma | Premium Aydınlatma & Mimari Tasarım – Antalya",
+    default: DEFAULT_TITLE,
     template: "%s",
   },
-  description:
-    "Arıkan Aydınlatma — Antalya'nın en geniş aydınlatma koleksiyonu ve Arıkan Exclusive mimari aydınlatma tasarım stüdyosu. Avize, lambader, aplik, abajur ve özel proje çözümleri.",
+  description: DEFAULT_DESCRIPTION,
   keywords: [
-    "aydınlatma",
+    "Antalya aydınlatma mağazası",
+    "Antalya aydınlatma",
+    "Şirinyalı aydınlatma",
+    "Muratpaşa aydınlatma",
     "avize",
     "lambader",
     "aplik",
     "abajur",
-    "Antalya aydınlatma",
-    "mimari aydınlatma",
     "Arıkan Aydınlatma",
-    "Arıkan Exclusive",
   ],
-  authors: [{ name: "Arıkan Aydınlatma" }],
+  authors: [{ name: SITE_NAME }],
+  alternates: { canonical: "/" },
   openGraph: {
     type: "website",
     locale: "tr_TR",
-    siteName: "Arıkan Aydınlatma",
-    title:
-      "Arıkan Aydınlatma | Premium Aydınlatma & Mimari Tasarım – Antalya",
-    description:
-      "Antalya'nın en geniş aydınlatma koleksiyonu ve mimari aydınlatma tasarım stüdyosu.",
+    siteName: SITE_NAME,
+    title: DEFAULT_TITLE,
+    description: DEFAULT_DESCRIPTION,
+    url: "/",
+    images: [{ url: OG_IMAGE, alt: "Arıkan Aydınlatma Antalya" }],
   },
   twitter: {
     card: "summary_large_image",
-    title:
-      "Arıkan Aydınlatma | Premium Aydınlatma & Mimari Tasarım – Antalya",
-    description:
-      "Antalya'nın en geniş aydınlatma koleksiyonu ve mimari aydınlatma tasarım stüdyosu.",
+    title: DEFAULT_TITLE,
+    description: DEFAULT_DESCRIPTION,
+    images: [OG_IMAGE],
   },
 };
 
@@ -53,7 +59,15 @@ export default function RootLayout({
 }) {
   return (
     <html lang="tr">
-      <body>{children}</body>
+      <body>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(localBusinessJsonLd),
+          }}
+        />
+        {children}
+      </body>
     </html>
   );
 }

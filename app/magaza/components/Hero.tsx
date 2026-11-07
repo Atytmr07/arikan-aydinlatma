@@ -213,7 +213,7 @@ export default function Hero() {
                   className="absolute inset-0"
                 >
                   <SmartImage
-                    alt="Arıkan Aydınlatma — görsel yakında"
+                    alt="Arıkan Aydınlatma mağazası — avize, lambader ve aplik çeşitleri, Şirinyalı Antalya"
                     brand="magaza"
                     sizes="(max-width: 1024px) 100vw, 50vw"
                   />

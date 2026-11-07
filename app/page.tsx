@@ -60,6 +60,13 @@ export default function PortalPage() {
       className="relative h-[100dvh] w-screen overflow-hidden bg-black"
       aria-label="Arıkan marka seçim portalı"
     >
+      <p className="sr-only">
+        Arıkan Aydınlatma, Antalya Şirinyalı&apos;da avize, lambader, aplik,
+        abajur, ampul ve LED aydınlatma çeşitleri sunan aydınlatma
+        mağazasıdır; özel imalat ve montaj hizmeti verir. Arıkan Exclusive ise
+        mimarlar ve iç mimarlar için özel çizim mimari aydınlatma projeleri
+        hazırlar. Mağaza: Şirinyalı Mah. Sinanoğlu Cad., Muratpaşa/Antalya.
+      </p>
       <div className="flex h-full w-full flex-col md:flex-row">
         {/* ───────────── BRAND A — MAĞAZA (red / white) ───────────── */}
         <motion.section
@@ -102,7 +109,7 @@ export default function PortalPage() {
               variants={itemVariants}
               className="mt-7 font-jost text-[10px] font-medium uppercase tracking-[0.2em] text-[#E11B22]"
             >
-              Aydınlatma Mağazası
+              Antalya Aydınlatma Mağazası
             </motion.p>
             <motion.h1
               variants={itemVariants}
@@ -116,9 +123,13 @@ export default function PortalPage() {
             >
               Avize · Lambader · Aplik · Abajur · Ampul
             </motion.p>
-            <motion.button
+            <motion.a
               variants={itemVariants}
-              onClick={() => handleEnter("magaza")}
+              href="/magaza"
+              onClick={(e) => {
+                e.preventDefault();
+                handleEnter("magaza");
+              }}
               className="group/btn mt-9 inline-flex items-center gap-3 border border-[#E11B22] px-7 py-3 font-jost text-xs uppercase tracking-[0.18em] text-[#E11B22] transition-colors duration-300 hover:bg-[#E11B22] hover:text-white"
             >
               Mağazaya Gir
@@ -126,7 +137,7 @@ export default function PortalPage() {
                 size={15}
                 className="transition-transform duration-300 group-hover/btn:translate-x-1"
               />
-            </motion.button>
+            </motion.a>
           </motion.div>
 
           <div
@@ -198,9 +209,13 @@ export default function PortalPage() {
             >
               Özel Çizim · Proje Tasarımı · Mimari Çözümler
             </motion.p>
-            <motion.button
+            <motion.a
               variants={itemVariants}
-              onClick={() => handleEnter("exclusive")}
+              href="/exclusive"
+              onClick={(e) => {
+                e.preventDefault();
+                handleEnter("exclusive");
+              }}
               className="group/btn mt-9 inline-flex items-center gap-3 border border-[#D4AF6E] px-7 py-3 font-montserrat text-[10px] uppercase tracking-[0.25em] text-[#D4AF6E] transition-colors duration-300 hover:bg-[#D4AF6E] hover:text-[#0A0908]"
             >
               Exclusive&apos;e Gir
@@ -208,7 +223,7 @@ export default function PortalPage() {
                 size={15}
                 className="transition-transform duration-300 group-hover/btn:translate-x-1"
               />
-            </motion.button>
+            </motion.a>
           </motion.div>
         </motion.section>
       </div>

@@ -1,24 +1,28 @@
 import type { Metadata } from "next";
 
+const TITLE =
+  "Antalya Aydınlatma Mağazası – Avize, Lambader, Aplik | Arıkan Aydınlatma";
+const DESCRIPTION =
+  "Antalya Şirinyalı bölgesinde aydınlatma mağazası: avize, lambader, aplik, abajur, ampul ve LED çeşitleri, özel imalat ve güvenilir montaj. Muratpaşa Sinanoğlu Caddesi, 4.4 Google puanı.";
+
 export const metadata: Metadata = {
-  title: "Arıkan Aydınlatma Mağazası | Avize, Lambader, Aplik – Antalya",
-  description:
-    "Antalya Şirinyalı'da avize, lambader, aplik, abajur ve ampul çeşitleri. Arıkan Aydınlatma'da geniş ürün yelpazesi, uygun fiyat ve güvenilir montaj hizmeti. 4.4★ Google puanı.",
+  title: TITLE,
+  description: DESCRIPTION,
   alternates: { canonical: "/magaza" },
   openGraph: {
     type: "website",
     locale: "tr_TR",
     siteName: "Arıkan Aydınlatma",
-    title: "Arıkan Aydınlatma Mağazası | Avize, Lambader, Aplik – Antalya",
-    description:
-      "Antalya'nın en geniş aydınlatma koleksiyonu. Avize, lambader, aplik, abajur ve ampul çeşitleri.",
+    title: TITLE,
+    description: DESCRIPTION,
     url: "/magaza",
+    images: [{ url: "/galeri/hero.jpg", alt: "Arıkan Aydınlatma mağazası, Antalya" }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Arıkan Aydınlatma Mağazası | Avize, Lambader, Aplik – Antalya",
-    description:
-      "Antalya'nın en geniş aydınlatma koleksiyonu. Avize, lambader, aplik, abajur ve ampul.",
+    title: TITLE,
+    description: DESCRIPTION,
+    images: ["/galeri/hero.jpg"],
   },
 };
 

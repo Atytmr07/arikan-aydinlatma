@@ -6,6 +6,7 @@ const NAV_LINKS = [
   { label: "Kategoriler", href: "#kategoriler" },
   { label: "Katalog", href: "#katalog" },
   { label: "Yorumlar", href: "#yorumlar" },
+  { label: "Sık Sorulan Sorular", href: "#sss" },
   { label: "İletişim", href: "#iletisim" },
 ];
 

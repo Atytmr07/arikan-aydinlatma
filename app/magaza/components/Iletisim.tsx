@@ -105,6 +105,14 @@ export default function Iletisim() {
             >
               <Phone size={16} /> Bizi Arayın
             </a>
+            <a
+              href="https://www.google.com/maps/dir/?api=1&destination=Arıkan+Aydınlatma+Sinanoğlu+Cad.+Şirinyalı+Muratpaşa+Antalya"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center gap-3 border border-black/15 px-8 py-4 font-jost text-xs uppercase tracking-[0.18em] text-[#16130F] transition-colors duration-300 hover:border-[#E11B22] hover:text-[#E11B22]"
+            >
+              <MapPin size={16} /> Yol Tarifi Al
+            </a>
           </div>
         </motion.div>
       </div>
