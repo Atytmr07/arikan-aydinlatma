@@ -23,7 +23,7 @@ export const localBusinessJsonLd = {
   name: SITE_NAME,
   url: SITE_URL,
   image: `${SITE_URL}${OG_IMAGE}`,
-  logo: `${SITE_URL}/icon.png`,
+  logo: `${SITE_URL}/logo.png`,
   description: DEFAULT_DESCRIPTION,
   telephone: ["+902423163070", "+905322749062"],
   address: {
