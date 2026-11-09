@@ -21,7 +21,7 @@ interface Tile {
 }
 
 const TILES: Tile[] = [
-  { name: "Avize", desc: "Salon & antre", icon: LampCeiling, href: "#katalog" },
+  { name: "Avize", desc: "Avize modelleri", icon: LampCeiling, href: "/magaza/avize" },
   { name: "Lambader", desc: "Ayaklı aydınlatma", icon: LampFloor, href: "#katalog" },
   { name: "Aplik", desc: "Duvar armatürleri", icon: LampWallUp, href: "#katalog" },
   { name: "Abajur", desc: "Masa & komodin", icon: LampDesk, href: "#katalog" },

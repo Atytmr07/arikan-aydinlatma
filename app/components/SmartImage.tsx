@@ -12,6 +12,8 @@ interface SmartImageProps {
   className?: string;
   priority?: boolean;
   sizes?: string;
+  /** CSS object-position for the real photo, e.g. "50% 20%". */
+  objectPosition?: string;
 }
 
 // Renders next/image (fill, object-cover) when a src is supplied, otherwise a
@@ -24,6 +26,7 @@ export default function SmartImage({
   className = "",
   priority = false,
   sizes = "(max-width: 768px) 100vw, 50vw",
+  objectPosition,
 }: SmartImageProps) {
   if (src) {
     return (
@@ -34,6 +37,7 @@ export default function SmartImage({
         sizes={sizes}
         priority={priority}
         className={`object-cover ${className}`}
+        style={objectPosition ? { objectPosition } : undefined}
       />
     );
   }

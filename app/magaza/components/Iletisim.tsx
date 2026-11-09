@@ -38,7 +38,7 @@ export default function Iletisim() {
             <li className="flex gap-4">
               <Phone size={20} className="mt-1 shrink-0 text-[#E11B22]" />
               <span className="font-jost text-base font-light text-[#3A352F]">
-                {CONTACT.phonePrimary} / {CONTACT.phoneMobile}
+                {CONTACT.phoneMobile} / {CONTACT.phonePrimary}
               </span>
             </li>
             <li className="flex gap-4">
@@ -100,7 +100,7 @@ export default function Iletisim() {
               <MessageCircle size={16} /> WhatsApp&apos;tan Yaz
             </a>
             <a
-              href={CONTACT.phonePrimaryTel}
+              href={CONTACT.phoneMobileTel}
               className="inline-flex items-center justify-center gap-3 border border-[#E11B22] px-8 py-4 font-jost text-xs uppercase tracking-[0.18em] text-[#E11B22] transition-colors duration-300 hover:bg-[#E11B22] hover:text-white"
             >
               <Phone size={16} /> Bizi Arayın

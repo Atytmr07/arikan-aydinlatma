@@ -4,6 +4,7 @@ export const CONTACT = {
   phonePrimary: "0242 316 30 70",
   phonePrimaryTel: "tel:02423163070",
   phoneMobile: "0532 274 90 62",
+  phoneMobileTel: "tel:05322749062",
   whatsapp: "https://wa.me/905322749062",
   address: "Şirinyalı Mah. Sinanoğlu Cad. Merve Apt. No:82/A-B-C, Muratpaşa/Antalya",
   hours: "Pazartesi–Cumartesi: 09:00–19:00",

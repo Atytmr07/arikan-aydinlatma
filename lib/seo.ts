@@ -7,10 +7,10 @@ export const SITE_URL = "https://www.arikanaydinlatma.com";
 export const SITE_NAME = "Arıkan Aydınlatma";
 
 export const DEFAULT_TITLE =
-  "Arıkan Aydınlatma | Antalya Aydınlatma Mağazası – Avize, Lambader, Aplik";
+  "Arıkan Aydınlatma | Antalya Avize ve Aydınlatma Mağazası";
 
 export const DEFAULT_DESCRIPTION =
-  "Antalya Şirinyalı bölgesinde aydınlatma mağazası: avize, lambader, aplik, abajur, ampul ve LED çeşitleri, özel imalat ve montaj hizmeti. Arıkan Aydınlatma, Muratpaşa Antalya.";
+  "Antalya avize ve aydınlatma mağazası: Şirinyalı bölgesinde avize, lambader, aplik, abajur, ampul ve LED çeşitleri, özel imalat ve montaj hizmeti. Arıkan Aydınlatma, Muratpaşa Antalya.";
 
 export const OG_IMAGE = "/galeri/hero.jpg";
 
@@ -25,7 +25,7 @@ export const localBusinessJsonLd = {
   image: `${SITE_URL}${OG_IMAGE}`,
   logo: `${SITE_URL}/logo.png`,
   description: DEFAULT_DESCRIPTION,
-  telephone: ["+902423163070", "+905322749062"],
+  telephone: ["+905322749062", "+902423163070"],
   address: {
     "@type": "PostalAddress",
     streetAddress: "Şirinyalı Mah. Sinanoğlu Cad. Merve Apt. No:82/A-B-C",

@@ -127,9 +127,15 @@ export default function Hero() {
               variants={fade}
               className="mt-7 max-w-md font-jost text-base font-light leading-relaxed text-[#6A625A]"
             >
-              Şirinyalı, Muratpaşa&apos;da avize, lambader, aplik, abajur ve ampul
-              çeşitlerinde geniş seçenek, uygun fiyat, özel imalat ve güvenilir
-              montaj.
+              Şirinyalı, Muratpaşa&apos;da{" "}
+              <a
+                href="/magaza/avize"
+                className="text-[#16130F] underline decoration-[#E11B22]/50 underline-offset-4 transition-colors hover:text-[#E11B22]"
+              >
+                avize
+              </a>
+              , lambader, aplik, abajur ve ampul çeşitlerinde geniş seçenek, uygun
+              fiyat, özel imalat ve güvenilir montaj.
             </motion.p>
 
             <motion.div
@@ -153,10 +159,10 @@ export default function Hero() {
               </div>
               <span className="hidden h-4 w-[1px] bg-black/15 sm:block" />
               <a
-                href={CONTACT.phonePrimaryTel}
+                href={CONTACT.phoneMobileTel}
                 className="font-jost text-sm text-[#16130F] transition-colors duration-200 hover:text-[#E11B22]"
               >
-                {CONTACT.phonePrimary}
+                {CONTACT.phoneMobile}
               </a>
             </motion.div>
 

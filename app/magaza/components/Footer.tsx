@@ -3,11 +3,12 @@ import { MagazaMark } from "../../components/BrandMarks";
 import { CONTACT } from "../../../lib/constants";
 
 const NAV_LINKS = [
-  { label: "Kategoriler", href: "#kategoriler" },
-  { label: "Katalog", href: "#katalog" },
-  { label: "Yorumlar", href: "#yorumlar" },
-  { label: "Sık Sorulan Sorular", href: "#sss" },
-  { label: "İletişim", href: "#iletisim" },
+  { label: "Antalya Avize Modelleri", href: "/magaza/avize" },
+  { label: "Kategoriler", href: "/magaza#kategoriler" },
+  { label: "Katalog", href: "/magaza#katalog" },
+  { label: "Yorumlar", href: "/magaza#yorumlar" },
+  { label: "Sık Sorulan Sorular", href: "/magaza#sss" },
+  { label: "İletişim", href: "/magaza#iletisim" },
 ];
 
 export default function Footer() {
@@ -74,7 +75,7 @@ export default function Footer() {
             </h3>
             <ul className="space-y-3">
               <li className="font-jost text-sm font-light text-white/80">
-                {CONTACT.phonePrimary}
+                {CONTACT.phoneMobile}
               </li>
               <li>
                 <a

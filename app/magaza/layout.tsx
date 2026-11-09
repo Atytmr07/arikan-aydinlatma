@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 
 const TITLE =
-  "Antalya Aydınlatma Mağazası – Avize, Lambader, Aplik | Arıkan Aydınlatma";
+  "Antalya Avize ve Aydınlatma Mağazası – Avize, Lambader, Aplik | Arıkan Aydınlatma";
 const DESCRIPTION =
-  "Antalya Şirinyalı bölgesinde aydınlatma mağazası: avize, lambader, aplik, abajur, ampul ve LED çeşitleri, özel imalat ve güvenilir montaj. Muratpaşa Sinanoğlu Caddesi, 4.4 Google puanı.";
+  "Antalya avize ve aydınlatma mağazası: Şirinyalı bölgesinde kristal, modern ve LED avize modelleri, lambader, aplik, abajur ve ampul çeşitleri, özel imalat ve montaj. Muratpaşa Sinanoğlu Caddesi.";
 
 export const metadata: Metadata = {
   title: TITLE,
