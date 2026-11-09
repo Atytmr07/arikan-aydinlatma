@@ -213,9 +213,10 @@ export default function Hero() {
                     className="absolute inset-0"
                   >
                     <SmartImage
-                      src="/galeri/hero.jpg"
-                      alt="Arıkan Aydınlatma mağazasında altın başlıklı mermer masa lambası ve kristal avizeler, Şirinyalı Antalya"
+                      src="/galeri/galeri-04.jpg"
+                      alt="Altın çerçeveli alabaster LED avize, Antalya aydınlatma mağazası Arıkan Aydınlatma"
                       brand="magaza"
+                      className="origin-[50%_0%] scale-[1.6] object-top"
                       priority
                       sizes="(max-width: 1024px) 60vw, 330px"
                     />
@@ -235,10 +236,10 @@ export default function Hero() {
                 className="absolute right-0 top-[4%] aspect-[3/4] w-[33%] overflow-hidden shadow-[0_18px_40px_-20px_rgba(22,19,15,0.45)]"
               >
                 <SmartImage
-                  src="/galeri/galeri-04.jpg"
-                  alt="Altın çerçeveli alabaster LED avize, Antalya aydınlatma"
+                  src="/galeri/galeri-09.jpg"
+                  alt="Mutfak için cam sarkıt lambalar, Antalya aydınlatma"
                   brand="magaza"
-                  className="object-[50%_8%]"
+                  className="object-[50%_20%]"
                   sizes="(max-width: 1024px) 30vw, 170px"
                 />
               </motion.div>
