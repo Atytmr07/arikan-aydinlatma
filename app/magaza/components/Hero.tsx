@@ -193,37 +193,71 @@ export default function Hero() {
             transition={{ duration: 1, delay: 0.25, ease: [0.22, 1, 0.36, 1] }}
             className="relative lg:col-span-6"
           >
-            <div className="relative mx-auto w-full max-w-[460px] lg:ml-auto lg:max-w-[520px]">
-              {/* offset red frame */}
-              <div
-                aria-hidden
-                className="absolute -left-3 -top-3 hidden h-full w-full border border-[#E11B22]/45 sm:block lg:-left-5 lg:-top-5"
-              />
-
-              {/* photo */}
-              <div className="relative aspect-[4/5] w-full overflow-hidden">
-                <motion.div
-                  initial={{ scale: 1 }}
-                  animate={{ scale: 1.08 }}
-                  transition={{
-                    duration: 16,
-                    repeat: Infinity,
-                    repeatType: "reverse",
-                    ease: "easeInOut",
-                  }}
-                  className="absolute inset-0"
-                >
-                  <SmartImage
-                    alt="Arıkan Aydınlatma mağazası — avize, lambader ve aplik çeşitleri, Şirinyalı Antalya"
-                    brand="magaza"
-                    sizes="(max-width: 1024px) 100vw, 50vw"
-                  />
-                </motion.div>
+            <div className="relative mx-auto aspect-[1/1.02] w-full max-w-[460px] lg:ml-auto lg:max-w-[520px]">
+              {/* main photo + offset red frame */}
+              <div className="absolute bottom-[12%] left-0 top-0 w-[63%]">
                 <div
                   aria-hidden
-                  className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-black/5"
+                  className="absolute -left-3 -top-3 hidden h-full w-full border border-[#E11B22]/45 sm:block lg:-left-5 lg:-top-5"
                 />
+                <div className="relative h-full w-full overflow-hidden">
+                  <motion.div
+                    initial={{ scale: 1 }}
+                    animate={{ scale: 1.08 }}
+                    transition={{
+                      duration: 16,
+                      repeat: Infinity,
+                      repeatType: "reverse",
+                      ease: "easeInOut",
+                    }}
+                    className="absolute inset-0"
+                  >
+                    <SmartImage
+                      src="/galeri/hero.jpg"
+                      alt="Arıkan Aydınlatma mağazasında altın başlıklı mermer masa lambası ve kristal avizeler, Şirinyalı Antalya"
+                      brand="magaza"
+                      priority
+                      sizes="(max-width: 1024px) 60vw, 330px"
+                    />
+                  </motion.div>
+                  <div
+                    aria-hidden
+                    className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-black/5"
+                  />
+                </div>
               </div>
+
+              {/* secondary photo — top right */}
+              <motion.div
+                initial={{ opacity: 0, y: 24 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.9, delay: 0.55, ease: [0.22, 1, 0.36, 1] }}
+                className="absolute right-0 top-[4%] aspect-[3/4] w-[33%] overflow-hidden shadow-[0_18px_40px_-20px_rgba(22,19,15,0.45)]"
+              >
+                <SmartImage
+                  src="/galeri/galeri-04.jpg"
+                  alt="Altın çerçeveli alabaster LED avize, Antalya aydınlatma"
+                  brand="magaza"
+                  className="object-[50%_8%]"
+                  sizes="(max-width: 1024px) 30vw, 170px"
+                />
+              </motion.div>
+
+              {/* tertiary photo — bottom right */}
+              <motion.div
+                initial={{ opacity: 0, y: 24 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.9, delay: 0.75, ease: [0.22, 1, 0.36, 1] }}
+                className="absolute bottom-0 right-0 aspect-[3/4] w-[33%] overflow-hidden shadow-[0_18px_40px_-20px_rgba(22,19,15,0.45)]"
+              >
+                <SmartImage
+                  src="/galeri/galeri-06.jpg"
+                  alt="Alabaster duvar aplikleri, modern aplik çeşitleri"
+                  brand="magaza"
+                  className="object-[50%_62%]"
+                  sizes="(max-width: 1024px) 30vw, 170px"
+                />
+              </motion.div>
 
               {/* glass card — rating */}
               <motion.div
@@ -246,7 +280,7 @@ export default function Hero() {
                 initial={{ opacity: 0, y: 14 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.7, delay: 1.15 }}
-                className="glass-light absolute bottom-8 right-3 flex items-center gap-2.5 px-4 py-3 sm:-right-5"
+                className="glass-light absolute bottom-[17%] left-3 flex items-center gap-2.5 px-3 py-2.5 sm:left-auto sm:right-[30%] sm:px-4 sm:py-3"
               >
                 <ShieldCheck size={18} className="text-[#E11B22]" strokeWidth={1.6} />
                 <div className="leading-tight">
