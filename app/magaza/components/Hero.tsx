@@ -98,7 +98,7 @@ export default function Hero() {
             <motion.div variants={fade} className="mb-7 flex items-center gap-3">
               <span className="h-[1px] w-12 bg-[#E11B22]" />
               <p className="font-jost text-[11px] font-medium uppercase tracking-[0.25em] text-[#E11B22]">
-                Şirinyalı · Antalya
+                Antalya Aydınlatma Mağazası
               </p>
             </motion.div>
 
@@ -127,8 +127,9 @@ export default function Hero() {
               variants={fade}
               className="mt-7 max-w-md font-jost text-base font-light leading-relaxed text-[#6A625A]"
             >
-              Avize, lambader, aplik, abajur ve ampul çeşitlerinde geniş seçenek,
-              uygun fiyat ve güvenilir montaj.
+              Şirinyalı, Muratpaşa&apos;da avize, lambader, aplik, abajur ve ampul
+              çeşitlerinde geniş seçenek, uygun fiyat, özel imalat ve güvenilir
+              montaj.
             </motion.p>
 
             <motion.div
