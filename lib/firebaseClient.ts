@@ -22,6 +22,12 @@ import {
   type Katalog,
   type Manifest,
 } from "./katalog";
+import {
+  GALERI_DIR,
+  GALERI_MANIFEST,
+  type GaleriItem,
+  type GaleriManifest,
+} from "./galeri";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCk4UEclburGxBsYDM9x1bJqH_FuzxK3rw",
@@ -107,4 +113,130 @@ export async function setCatalogActive(
   const target = manifest.kataloglar.find((k) => k.id === id);
   if (target) target.active = active;
   await writeManifest(manifest);
+}
+
+// ───────────────────────────── Galeri ─────────────────────────────
+
+/** Güncel galeri listesi (önbelleksiz). Okuma hatasında fırlatır — boş listeyle
+ *  üzerine yazmayı önlemek için çağıran taraf yazmadan önce bunu kullanmalı. */
+export async function listGallery(): Promise<GaleriItem[]> {
+  const res = await fetch("/api/galeri", { cache: "no-store" });
+  const data = (await res.json()) as { items?: GaleriItem[]; error?: string };
+  if (!res.ok || !Array.isArray(data.items)) {
+    throw new Error(data.error || "Galeri listesi okunamadı.");
+  }
+  return data.items;
+}
+
+async function writeGallery(items: GaleriItem[]): Promise<void> {
+  const manifest: GaleriManifest = { items };
+  await uploadString(
+    ref(storage, GALERI_MANIFEST),
+    JSON.stringify(manifest, null, 2),
+    "raw",
+    { contentType: "application/json", cacheControl: "no-cache, max-age=0" }
+  );
+}
+
+const MAX_EDGE = 1800;
+
+/** Telefon fotoğraflarını yüklemeden önce küçültür (uzun kenar ≤1800px, JPEG). */
+async function prepareImage(file: File): Promise<{ blob: Blob; w: number; h: number }> {
+  let bmp: ImageBitmap;
+  try {
+    bmp = await createImageBitmap(file, { imageOrientation: "from-image" });
+  } catch {
+    throw new Error(
+      `"${file.name}" açılamadı. JPG, PNG veya WEBP yükleyin (iPhone HEIC ise JPG olarak kaydedin).`
+    );
+  }
+  const scale = Math.min(1, MAX_EDGE / Math.max(bmp.width, bmp.height));
+  const w = Math.round(bmp.width * scale);
+  const h = Math.round(bmp.height * scale);
+  const canvas = document.createElement("canvas");
+  canvas.width = w;
+  canvas.height = h;
+  const ctx = canvas.getContext("2d");
+  if (!ctx) throw new Error("Tarayıcı görseli işleyemedi.");
+  ctx.fillStyle = "#fff"; // şeffaf PNG'ler JPEG'de siyah olmasın
+  ctx.fillRect(0, 0, w, h);
+  ctx.drawImage(bmp, 0, 0, w, h);
+  bmp.close();
+  const blob = await new Promise<Blob>((resolve, reject) =>
+    canvas.toBlob(
+      (b) => (b ? resolve(b) : reject(new Error("Görsel sıkıştırılamadı."))),
+      "image/jpeg",
+      0.85
+    )
+  );
+  return { blob, w, h };
+}
+
+/**
+ * Görselleri yükler ve galerinin BAŞINA ekler. Her dosya ayrı yüklenir; biri
+ * başarısız olursa başarılı olanlar yine kaydedilir.
+ */
+export async function uploadGalleryImages(
+  files: File[],
+  onProgress?: (done: number, total: number) => void
+): Promise<{ added: number; errors: string[] }> {
+  const added: GaleriItem[] = [];
+  const errors: string[] = [];
+
+  for (let i = 0; i < files.length; i++) {
+    onProgress?.(i, files.length);
+    try {
+      const { blob, w, h } = await prepareImage(files[i]);
+      const id = crypto.randomUUID();
+      const storagePath = `${GALERI_DIR}/${id}.jpg`;
+      await uploadBytes(ref(storage, storagePath), blob, {
+        contentType: "image/jpeg",
+        cacheControl: "public, max-age=31536000, immutable",
+      });
+      added.push({
+        id,
+        src: storageMediaUrl(storagePath),
+        w,
+        h,
+        storagePath,
+        uploadedAt: new Date().toISOString(),
+      });
+    } catch (err) {
+      errors.push(err instanceof Error ? err.message : `"${files[i].name}" yüklenemedi.`);
+    }
+  }
+  onProgress?.(files.length, files.length);
+
+  if (added.length) {
+    const current = await listGallery();
+    await writeGallery([...added.reverse(), ...current]);
+  }
+  return { added: added.length, errors };
+}
+
+export async function deleteGalleryItem(id: string): Promise<void> {
+  const current = await listGallery();
+  const target = current.find((i) => i.id === id);
+  await writeGallery(current.filter((i) => i.id !== id));
+  if (target?.storagePath) {
+    await deleteObject(ref(storage, target.storagePath)).catch(() => {
+      /* dosya zaten yok — liste esas kaynak */
+    });
+  }
+}
+
+/** Sırayı kaydeder. Yalnızca listede hâlâ bulunan öğeleri korur. */
+export async function reorderGallery(orderedIds: string[]): Promise<void> {
+  const current = await listGallery();
+  const byId = new Map(current.map((i) => [i.id, i]));
+  const ordered = orderedIds.map((id) => byId.get(id)).filter(Boolean) as GaleriItem[];
+  const rest = current.filter((i) => !orderedIds.includes(i.id));
+  await writeGallery([...ordered, ...rest]);
+}
+
+export async function setGalleryAlt(id: string, alt: string): Promise<void> {
+  const current = await listGallery();
+  await writeGallery(
+    current.map((i) => (i.id === id ? { ...i, alt: alt.trim() || undefined } : i))
+  );
 }

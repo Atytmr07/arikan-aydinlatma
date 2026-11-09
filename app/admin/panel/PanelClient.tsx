@@ -20,6 +20,13 @@ import {
   setCatalogActive,
 } from "../../../lib/firebaseClient";
 import { MagazaMark } from "../../components/BrandMarks";
+import GaleriPanel from "./GaleriPanel";
+
+type Tab = "katalog" | "galeri";
+const TABS: { id: Tab; label: string }[] = [
+  { id: "katalog", label: "Kataloglar" },
+  { id: "galeri", label: "Galeri" },
+];
 
 interface KatalogRow {
   id: string;
@@ -47,6 +54,7 @@ function formatDate(iso: string): string {
 }
 
 export default function PanelClient() {
+  const [tab, setTab] = useState<Tab>("katalog");
   const [items, setItems] = useState<KatalogRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [file, setFile] = useState<File | null>(null);
@@ -152,7 +160,7 @@ export default function PanelClient() {
             <MagazaMark size={34} />
             <div>
               <h1 className="font-marcellus text-xl text-[#F5F0EB]">
-                Katalog Yönetimi
+                Yönetim Paneli
               </h1>
               <p className="font-jost text-[10px] uppercase tracking-[0.18em] text-[#888880]">
                 Arıkan Aydınlatma · Admin
@@ -167,8 +175,28 @@ export default function PanelClient() {
             <LogOut size={14} /> Çıkış Yap
           </button>
         </div>
+        <nav aria-label="Panel bölümleri" className="mx-auto flex max-w-5xl gap-1 px-5 md:px-8">
+          {TABS.map((t) => (
+            <button
+              key={t.id}
+              type="button"
+              onClick={() => setTab(t.id)}
+              aria-current={tab === t.id ? "page" : undefined}
+              className={`border-b-2 px-4 py-3 font-jost text-[11px] uppercase tracking-[0.18em] transition-colors ${
+                tab === t.id
+                  ? "border-[#E11B22] text-[#F5F0EB]"
+                  : "border-transparent text-[#888880] hover:text-[#F5F0EB]"
+              }`}
+            >
+              {t.label}
+            </button>
+          ))}
+        </nav>
       </header>
 
+      {tab === "galeri" ? (
+        <GaleriPanel />
+      ) : (
       <div className="mx-auto max-w-5xl px-5 py-10 md:px-8">
         {/* feedback */}
         {feedback && (
@@ -324,6 +352,7 @@ export default function PanelClient() {
           )}
         </section>
       </div>
+      )}
     </main>
   );
 }

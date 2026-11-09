@@ -9,14 +9,20 @@ import Yorumlar from "./components/Yorumlar";
 import SSS from "./components/SSS";
 import Iletisim from "./components/Iletisim";
 import Footer from "./components/Footer";
+import { loadGaleri } from "../../lib/galeri";
 
-export default function MagazaPage() {
+// Galeri panelden yönetiliyor: sayfa en fazla 60 sn'de bir yenilenir, böylece
+// panelde yapılan değişiklikler deploy gerekmeden sitede görünür.
+export const revalidate = 60;
+
+export default async function MagazaPage() {
+  const shots = await loadGaleri();
   return (
     <main className="bg-white">
       <Navbar />
       <Hero />
       <Kategoriler />
-      <Galeri />
+      <Galeri shots={shots} />
       <OzelImalat />
       <Markalar />
       <Katalog />
