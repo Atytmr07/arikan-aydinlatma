@@ -14,6 +14,18 @@ export const DEFAULT_DESCRIPTION =
 
 export const OG_IMAGE = "/galeri/hero.jpg";
 
+// schema.org WebSite — Google arama sonucunda linkin üstündeki "site adı"
+// bunun `name` alanından alınır (yalnızca ana sayfada okunur).
+export const websiteJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "@id": `${SITE_URL}/#website`,
+  name: SITE_NAME,
+  alternateName: ["Arıkan Aydınlatma Antalya", "Arikan Aydinlatma"],
+  url: `${SITE_URL}/`,
+  inLanguage: "tr-TR",
+};
+
 // schema.org LocalBusiness — helps Google connect the website to the
 // business's Maps listing. Only verifiable facts from lib/constants.ts.
 export const localBusinessJsonLd = {

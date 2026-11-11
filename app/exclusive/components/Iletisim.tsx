@@ -28,7 +28,7 @@ export default function Iletisim() {
           Projenizi <span className="text-[#D4AF6E]">Konuşalım.</span>
         </h2>
         <p className="mt-8 font-montserrat text-sm font-light tracking-[0.1em] text-[#978E82]">
-          {CONTACT.exclusiveLocation} · {CONTACT.phonePrimary}
+          {CONTACT.phoneMobile} · {CONTACT.phonePrimary}
         </p>
 
         <div className="mt-12 flex w-full flex-col gap-4 sm:w-auto sm:flex-row sm:items-center sm:gap-5">

@@ -7,6 +7,7 @@ import {
   DEFAULT_DESCRIPTION,
   OG_IMAGE,
   localBusinessJsonLd,
+  websiteJsonLd,
 } from "../lib/seo";
 
 export const metadata: Metadata = {
@@ -63,7 +64,7 @@ export default function RootLayout({
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
-            __html: JSON.stringify(localBusinessJsonLd),
+            __html: JSON.stringify([websiteJsonLd, localBusinessJsonLd]),
           }}
         />
         {children}

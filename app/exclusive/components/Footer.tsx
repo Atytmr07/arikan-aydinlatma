@@ -75,7 +75,7 @@ export default function Footer() {
             </h3>
             <ul className="space-y-3">
               <li className="font-montserrat text-sm font-light text-[#978E82]">
-                {CONTACT.exclusiveLocation}
+                {CONTACT.phoneMobile}
               </li>
               <li className="font-montserrat text-sm font-light text-[#978E82]">
                 {CONTACT.phonePrimary}

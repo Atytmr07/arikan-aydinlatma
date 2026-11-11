@@ -10,11 +10,14 @@ interface Shot {
   h: number;
 }
 
+// Bu görseller küçük (≈400–600px); bulanık görünmemeleri için galeride küçük
+// kutularda (≤340px) gösterilir. Daha net görsel gelirse buraya ekleyin.
 const GALLERY: Shot[] = [
   { src: "/projeler/exc-07.jpg", w: 536, h: 571 },
-  { src: "/projeler/exc-08.jpg", w: 572, h: 510 },
+  { src: "/projeler/exc-05.jpg", w: 599, h: 716 },
   { src: "/projeler/exc-09.jpg", w: 425, h: 676 },
-  { src: "/projeler/exc-10.jpg", w: 556, h: 502 },
+  { src: "/projeler/exc-08.jpg", w: 572, h: 510 },
+  { src: "/projeler/exc-06.jpg", w: 588, h: 705 },
   { src: "/projeler/exc-11.jpg", w: 461, h: 526 },
   { src: "/projeler/exc-12.jpg", w: 514, h: 470 },
   { src: "/projeler/exc-13.jpg", w: 421, h: 471 },
@@ -46,7 +49,7 @@ export default function Galeri() {
           </h2>
         </motion.div>
 
-        <div className="columns-2 gap-3 md:columns-3 md:gap-4">
+        <div className="columns-2 gap-3 md:columns-3 md:gap-4 lg:columns-4">
           {GALLERY.map((shot, i) => (
             <motion.figure
               key={shot.src}
@@ -65,7 +68,8 @@ export default function Galeri() {
                 alt="Arıkan Exclusive proje görseli"
                 width={shot.w}
                 height={shot.h}
-                sizes="(max-width: 768px) 50vw, 33vw"
+                sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 340px"
+                quality={90}
                 className="h-auto w-full transition-transform duration-700 ease-out group-hover:scale-[1.05]"
               />
               <div
