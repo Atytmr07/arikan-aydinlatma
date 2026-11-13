@@ -1,5 +1,9 @@
 import type { Metadata, Viewport } from "next";
+import Script from "next/script";
 import "./globals.css";
+
+// Google etiketi (GA4 / Google Ads ölçümü)
+const GA_ID = "G-7H7QP29HZP";
 import {
   SITE_URL,
   SITE_NAME,
@@ -68,6 +72,16 @@ export default function RootLayout({
           }}
         />
         {children}
+        <Script
+          src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`}
+          strategy="afterInteractive"
+        />
+        <Script id="google-tag" strategy="afterInteractive">
+          {`window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', '${GA_ID}');`}
+        </Script>
       </body>
     </html>
   );
